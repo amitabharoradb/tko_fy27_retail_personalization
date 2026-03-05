@@ -1,0 +1,21 @@
+bundle:
+  name: tko27-retail-personalization
+
+variables:
+  catalog:
+    default: amitabh_arora_catalog
+  schema:
+    default: tko27_retail
+  volume_path:
+    default: /Volumes/amitabh_arora_catalog/tko27_retail/raw_data
+
+targets:
+  dev:
+    default: true
+    mode: development
+    workspace:
+      profile: fevm
+
+include:
+  - resources/jobs/*.yml
+  - resources/pipeline.yml

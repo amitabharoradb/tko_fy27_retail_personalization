@@ -1,0 +1,28 @@
+resources:
+  jobs:
+    phase1_setup:
+      name: "[${bundle.target}] TKO27 Phase 1 - UC Setup"
+      tasks:
+        - task_key: uc_setup
+          notebook_task:
+            notebook_path: ../../notebooks/01_uc_setup.py
+        - task_key: generate_data
+          depends_on:
+            - task_key: uc_setup
+          notebook_task:
+            notebook_path: ../../notebooks/02_generate_data.py
+        - task_key: load_data
+          depends_on:
+            - task_key: generate_data
+          notebook_task:
+            notebook_path: ../../notebooks/03_load_data.py
+        - task_key: governance
+          depends_on:
+            - task_key: load_data
+          notebook_task:
+            notebook_path: ../../notebooks/04_governance.py
+        - task_key: validate
+          depends_on:
+            - task_key: governance
+          notebook_task:
+            notebook_path: ../../notebooks/05_validate_phase1.py

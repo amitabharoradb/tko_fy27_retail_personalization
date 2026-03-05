@@ -1,0 +1,5 @@
+databricks-sql-connector
+databricks-sdk
+psycopg2-binary
+pandas
+requests

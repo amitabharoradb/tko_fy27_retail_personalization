@@ -1,0 +1,4 @@
+mlflow==3.6.0
+databricks-langchain
+databricks-vectorsearch
+databricks-agents

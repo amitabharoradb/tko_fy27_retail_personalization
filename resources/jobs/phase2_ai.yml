@@ -1,0 +1,13 @@
+resources:
+  jobs:
+    phase2_ai:
+      name: "[${bundle.target}] TKO27 Phase 2 - AI Layer"
+      tasks:
+        - task_key: vector_search_setup
+          notebook_task:
+            notebook_path: ../../agents/vector_search_setup.py
+        - task_key: style_assistant_deploy
+          depends_on:
+            - task_key: vector_search_setup
+          notebook_task:
+            notebook_path: ../../agents/style_assistant/agent.py

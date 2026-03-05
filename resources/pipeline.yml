@@ -1,0 +1,15 @@
+resources:
+  pipelines:
+    retail_intent_pipeline:
+      name: "[${bundle.target}] tko27-retail-intent-pipeline"
+      serverless: true
+      continuous: false
+      development: true
+      catalog: ${var.catalog}
+      target: ${var.schema}
+      channel: current
+      libraries:
+        - notebook:
+            path: ../pipelines/retail_intent_pipeline.py
+      configuration:
+        volume_path: ${var.volume_path}
