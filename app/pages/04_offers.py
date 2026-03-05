@@ -2,19 +2,32 @@ import os
 import streamlit as st
 import psycopg2
 import pandas as pd
+from databricks.sdk import WorkspaceClient
 
 st.set_page_config(page_title="Active Offers", layout="wide")
 st.header("Active Offers")
 
+LAKEBASE_HOST = "instance-b431eef3-5aa5-4fb2-9342-644528625843.database.cloud.databricks.com"
+LAKEBASE_DB = "databricks_postgres"
+LAKEBASE_INSTANCE = "retail-state"
 
-@st.cache_resource
+
 def get_lakebase_conn():
+    w = WorkspaceClient()
+    token_resp = w.api_client.do(
+        "POST",
+        "/api/2.0/database-instances/credential",
+        body={"instance_names": [LAKEBASE_INSTANCE]},
+    )
+    token = token_resp.get("access_token", "")
+    user = w.current_user.me().user_name
     return psycopg2.connect(
-        host=os.getenv("PGHOST"),
-        database=os.getenv("PGDATABASE"),
-        user=os.getenv("PGUSER"),
-        password=os.getenv("PGPASSWORD"),
-        port=os.getenv("PGPORT", "5432"),
+        host=LAKEBASE_HOST,
+        database=LAKEBASE_DB,
+        user=user,
+        password=token,
+        port=5432,
+        sslmode="require",
     )
 
 

@@ -2,6 +2,8 @@ command:
   - streamlit
   - run
   - app.py
+  - --server.port
+  - "8000"
 env:
   - name: DATABRICKS_WAREHOUSE_ID
-    valueFrom: sql-warehouse
+    value: d8e1a5c1893ef9b2

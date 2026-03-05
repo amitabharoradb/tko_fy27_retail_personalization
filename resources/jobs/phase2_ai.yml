@@ -10,4 +10,4 @@ resources:
           depends_on:
             - task_key: vector_search_setup
           notebook_task:
-            notebook_path: ../../agents/style_assistant/agent.py
+            notebook_path: ../../agents/style_assistant/deploy.py
