@@ -1,8 +1,9 @@
-import os
 import streamlit as st
 import psycopg2
 import pandas as pd
 from databricks.sdk import WorkspaceClient
+from components.customer_selector import render_customer_selector
+from components.db import get_connection
 
 st.set_page_config(page_title="Active Offers", layout="wide")
 st.header("Active Offers")
@@ -30,6 +31,9 @@ def get_lakebase_conn():
         sslmode="require",
     )
 
+
+sql_conn = get_connection()
+selected = render_customer_selector(sql_conn)
 
 customer_id = st.session_state.get("selected_customer", "")
 customer_id = st.text_input("Customer ID", value=customer_id)

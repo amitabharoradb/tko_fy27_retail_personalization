@@ -320,6 +320,12 @@ GROUP BY customer_id, category;
 | 4. Active Offers | Reads `personalized_offers` from Lakebase for current customer |
 | 5. Intent Signals | Browsing history; polls `customer_current_interests` every 10s → shows "Currently interested in: Denim" |
 
+**Customer Selector Widget** (shared across all pages):
+- Filterable table in `st.expander("Browse & Select Customer")`; expanded by default on page 1, collapsed elsewhere
+- Filter controls: `first_name`, `last_name`, `email`, `preferred_categories` (text), `age_bucket`, `gender`, `loyalty_tier` (multiselect), `loyalty_points` slider, `ltv_score` slider, `last_purchase_date` date range
+- Parameterized SQL query on `customer_profiles`, `LIMIT 200`
+- `st.dataframe` with single-row selection → sets `st.session_state["selected_customer"]`
+
 **Data connections:**
 
 | Data source | Access method |
@@ -373,6 +379,9 @@ tko_fy27_retail_personalization/
 │   └── certified_sql.sql
 └── app/
     ├── app.py
+    ├── components/
+    │   ├── __init__.py
+    │   └── customer_selector.py
     ├── pages/
     │   ├── 01_lookup.py
     │   ├── 02_profile.py

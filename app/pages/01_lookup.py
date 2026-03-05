@@ -1,7 +1,6 @@
-import os
 import streamlit as st
-from databricks.sdk.core import Config
-from databricks import sql
+from components.customer_selector import render_customer_selector
+from components.db import get_connection
 
 st.set_page_config(page_title="Customer Lookup", layout="wide")
 st.header("Customer Lookup")
@@ -9,17 +8,9 @@ st.header("Customer Lookup")
 CATALOG = "amitabh_arora_catalog"
 SCHEMA = "tko27_retail"
 
-
-@st.cache_resource
-def get_connection():
-    cfg = Config()
-    token = st.context.headers.get("x-forwarded-access-token")
-    return sql.connect(
-        server_hostname=cfg.host,
-        http_path=f"/sql/1.0/warehouses/{os.getenv('DATABRICKS_WAREHOUSE_ID')}",
-        access_token=token,
-    )
-
+conn = get_connection()
+render_customer_selector(conn, expanded=True)
+st.divider()
 
 search_type = st.radio("Search by", ["Customer ID", "Name"], horizontal=True)
 search_val = st.text_input(
@@ -28,7 +19,6 @@ search_val = st.text_input(
 )
 
 if st.button("Search") and search_val:
-    conn = get_connection()
     with conn.cursor() as cur:
         if search_type == "Customer ID":
             cur.execute(

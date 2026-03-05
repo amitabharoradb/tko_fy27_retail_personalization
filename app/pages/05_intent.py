@@ -1,9 +1,8 @@
-import os
 import time
 import streamlit as st
 import pandas as pd
-from databricks.sdk.core import Config
-from databricks import sql
+from components.customer_selector import render_customer_selector
+from components.db import get_connection
 
 st.set_page_config(page_title="Intent Signals", layout="wide")
 st.header("Intent Signals")
@@ -11,17 +10,8 @@ st.header("Intent Signals")
 CATALOG = "amitabh_arora_catalog"
 SCHEMA = "tko27_retail"
 
-
-@st.cache_resource
-def get_connection():
-    cfg = Config()
-    token = st.context.headers.get("x-forwarded-access-token")
-    return sql.connect(
-        server_hostname=cfg.host,
-        http_path=f"/sql/1.0/warehouses/{os.getenv('DATABRICKS_WAREHOUSE_ID')}",
-        access_token=token,
-    )
-
+conn = get_connection()
+selected = render_customer_selector(conn)
 
 customer_id = st.session_state.get("selected_customer", "")
 customer_id = st.text_input("Customer ID", value=customer_id)

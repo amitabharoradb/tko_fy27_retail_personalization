@@ -1,14 +1,17 @@
 import json
-import os
 import requests
 import streamlit as st
 from databricks.sdk.core import Config
+from components.customer_selector import render_customer_selector
+from components.db import get_connection
 
 st.set_page_config(page_title="Recommendations", layout="wide")
 st.header("Style Recommendations")
 
 ENDPOINT_NAME = "style-assistant-endpoint"
 
+conn = get_connection()
+selected = render_customer_selector(conn)
 
 customer_id = st.session_state.get("selected_customer", "")
 customer_id = st.text_input("Customer ID", value=customer_id)
